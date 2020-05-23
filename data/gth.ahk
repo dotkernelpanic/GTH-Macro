@@ -21,12 +21,17 @@ SetWorkingDir, %A_ScriptDir%
 
 
 ;                                                       ARRAYS THAT CONTAINS IMAGES
-; ------------------------------------------------------------------------------------------------------------------------------------------- ;
-  img_array := ["Blade", "Bullets", "Burger", "Beer", "BullpupShotgun", "Chino", "Chips", "CombatPDW", "CombatPistol",                        
-                    , "eCola", "Faction", "Faction2", "Faggio2", "Flashlight", "Petrol", "GasolineCan", "Gauntlet2", "Hammer", "HeavyPistol", 
-                    , "Hermes", "HotDog", "Issi3", "Keys", "LotteryTicket", "MachinePistol", "Masks", "MountTool", "Pariah", "Pistol",          
-                    , "Pizza", "Sandwich", "SIM", "Sprunk", "Tornado", "Tornado2", "Tornado5", "Wrench"]                                      
-;-------------------------------------------------------------------------------------------------------------------------------------------- ;
+; ------------------------------------------------------------------------------------------------------------------------------------------------------ ;
+  img_array := ["Blade", "Bullets", "Burger", "Blista2", "Beer", "BullpupShotgun", "Chino", "Chips", "CombatPDW", "CombatPistol", "Detergent"                       
+                    , "Dukes", "eCola", "Emperor" "Faction", "Faction2", "Faggio2", "Flashlight", "Petrol", "GasolineCan", 
+                    , "Gauntlet2", "Hammer", "HeavyPistol",  "Hermes", "HotDog", "Issi3", "Ingot" "Keys", "LotteryTicket", "MachinePistol", "Masks", 
+                    , "MountTool", "Pariah", "Pistol", "Pizza", "Ruiner" "Sandwich", "SIM", "Sprunk", "Tornado", "Tornado2", 
+                    , "Tornado5", "Vamos", "Wrench"]                                      
+;------------------------------------------------------------------------------------------------------------------------------------------------------- ;
+
+mousePosX := 0
+mousePosY := 0
+Order := ""
 
 
 /*
@@ -42,7 +47,7 @@ SetWorkingDir, %A_ScriptDir%
 Gui +AlwaysOnTop -Border -SysMenu +Owner -Caption +ToolWindow
 Gui, Font, s9
 Gui, Add, Text, x5 y0, Your order:
-Gui, Add, Text, x5 y15 w150 vOrderVar, %order%
+Gui, Add, Text, x5 y15 w150 vOrderVar, %Order%
 Gui, Add, Text, x5 y30, Help:
 Gui, Add, Text, x5 y50,   Ctrl+1  -  Open orders menu
 Gui, Add, Text, x5 y70,   Ctrl+2  -  Open truckers chat (/t)
@@ -122,7 +127,7 @@ Return
 ; -------------------------------------------
 
 ; --------------------------------------------------------
-;         [ALT+G HOTKEY] Open mu github rep
+;         [ALT+G HOTKEY] Open my github rep
 !g::Run, https://github.com/katharosMelancholin/GTH-Macro
 ; --------------------------------------------------------
 
@@ -130,6 +135,32 @@ Return
 ;        [ALT+R HOTKEY] Open RedAge Forum
 !r::Run, https://forum.redage.net/
 ; --------------------------------------------------------
+
+; --------------------------------------------------------
+;       [ALT+F HOTKEY] Finish job (/fjob)
+!f::
+    Send, T
+        Sleep 100
+    Send, {Text}/fjob
+        Sleep 100
+    Send, {Enter}
+Return
+; --------------------------------------------------------
+
+~LButton::
+    CoordMode, Mouse, Screen
+    getMousePos()
+
+
+        if (mousePosX > 1838 AND mousePosX < 1868) {
+            Sleep 50
+            CheckArray()
+        } else 
+            if (mousePosX > 1624 AND mousePosY < 1653) {
+                Sleep 50
+                CheckArray()
+            }
+Return
 
 
 ^x::ExitApp
@@ -142,6 +173,7 @@ Return
 ;                                       FUNCTION THAT CHECK IMAGES ARRAY
     CheckArray() {
         global img_array
+        global Order
         for index in img_array {
             image := img_array[index]
 
@@ -150,13 +182,25 @@ Return
             ImageSearch, fx, fy, 1600, 446, 1890, 1009, %file%
             if (ErrorLevel = 0) {
                 SplitPath, file,,,, noext
-                GuiControl,, Ordervar, %noext%
+                Order := noext
+                GuiControl,, Ordervar, %Order%
                 Break
-            }
-            else {
-                GuiControl,, Ordervar, Undefined
             }
         }
         return 
     }
 ; -----------------------------------------------------------------------------------
+
+; -----------------------------------------------------------------------------------
+;                           GETTING POSITION OF MOUSE POINTER
+    getMousePos() {
+        global mousePosX
+        global mousePosY
+
+        CoordMode, Mouse, Screen
+
+        MouseGetPos, mousePosX, mousePosY
+        Return mousePosX, mousePosY
+    }
+; ------------------------------------------------------------------------------------
+
