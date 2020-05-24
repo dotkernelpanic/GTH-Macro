@@ -3,6 +3,12 @@ FileEncoding, UTF-8
 SendMode Input
 SetWorkingDir, %A_ScriptDir%
 
+SysGet, VirtualScreenWidth, 78
+SysGet, VirtualScreenHeight, 79
+
+SysGet, VirtualScreenLeft, 76
+SysGet, VirtualScreenTop, 77
+
 /*
 *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *
 *                                                                                                               *
@@ -22,7 +28,7 @@ SetWorkingDir, %A_ScriptDir%
 
 ;                                                       ARRAYS THAT CONTAINS IMAGES
 ; ------------------------------------------------------------------------------------------------------------------------------------------------------ ;
-  img_array := ["Blade", "Bullets", "Burger", "Blista2", "Beer", "BullpupShotgun", "Chino", "Chips", "CombatPDW", "CombatPistol", "Detergent"                       
+  img_array := ["Blade", "Bullets", "Burger", "Blista2", "Beer", "BullpupShotgun", "Chino", "Chips", "Clothes", "CombatPDW", "CombatPistol", "Detergent"                       
                     , "Dukes", "eCola", "Emperor" "Faction", "Faction2", "Faggio2", "Flashlight", "Petrol", "GasolineCan", 
                     , "Gauntlet2", "Hammer", "HeavyPistol",  "Hermes", "HotDog", "Issi3", "Ingot" "Keys", "LotteryTicket", "MachinePistol", "Masks", 
                     , "MountTool", "Pariah", "Pistol", "Pizza", "Ruiner" "Sandwich", "SIM", "Sprunk", "Tornado", "Tornado2", 
@@ -53,7 +59,7 @@ Gui, Add, Text, x5 y50,   Ctrl+1  -  Open orders menu
 Gui, Add, Text, x5 y70,   Ctrl+2  -  Open truckers chat (/t)
 Gui, Add, Text, x5 y90,   Ctrl+3  -  Open OOS chat (/b)
 Gui, Add, Text, x5 y110,   Alt+1  -  /findtrailer command
-Gui, Add, Text, x5 y130,   Alt+2  -  Re-enter the truck
+Gui, Add, Text, x5 y130,   Alt+3  -  Manual ImageSearch
 Gui, Add, Text, x5 y150,   Alt+G  -  Open github repository
 Gui, Add, Text, x5 y170,   Alt+R  -  Open RegAge Forum
 Gui, Show, x1180 y890 w200 h195, GTH
@@ -79,6 +85,8 @@ Gui, Show, x1180 y890 w200 h195, GTH
 Return
 ; -----------------------------------------
 
+; ---------------------------------------
+;       [ALT+3 HOTKEY] Manual ImageSearch
 !3::
     CheckArray()
 Return
@@ -172,14 +180,22 @@ Return
 ; -----------------------------------------------------------------------------------
 ;                                       FUNCTION THAT CHECK IMAGES ARRAY
     CheckArray() {
+
+
         global img_array
         global Order
+        global VirtualScreenLeft
+        global VirtualScreenTop
+        global VirtualScreenWidth
+        global VirtualScreenHeight
+
         for index in img_array {
             image := img_array[index]
 
-            CoordMode, ToolTip, Screen
             file = %A_ScriptDir%\images\%image%.png
-            ImageSearch, fx, fy, 1600, 446, 1890, 1009, %file%
+        ;   ImageSearch, fx, fy, 0, 0, A_ScreenWidth, A_ScreenHeight, %file%
+        ImageSearch, OutputVarX, OutputVarY, VirtualScreenLeft, VirtualScreenTop
+		            ,VirtualScreenLeft+VirtualScreenWidth, VirtualScreenTop+VirtualScreenHeight, *20 %file%
             if (ErrorLevel = 0) {
                 SplitPath, file,,,, noext
                 Order := noext
