@@ -3,6 +3,9 @@ FileEncoding, UTF-8
 SendMode Input
 SetWorkingDir, %A_ScriptDir%
 
+CoordMode, Mouse, Screen
+CoordMode, Pixel, Screen
+
 SysGet, VirtualScreenWidth, 78
 SysGet, VirtualScreenHeight, 79
 
@@ -39,6 +42,9 @@ mousePosX := 0
 mousePosY := 0
 Order := ""
 
+ALL_RESOLUTIONS_GUI_XPOS := A_ScreenWidth   - 600
+ALL_RESOLUTIONS_GUI_YPOS := A_ScreenHeight  - 250
+
 
 /*
 *   GUI LAYOUT
@@ -50,19 +56,21 @@ Order := ""
 */
 
 ; ---------------------------------- GUI SETTINGS ---------------------------
-Gui +AlwaysOnTop -Border -SysMenu +Owner -Caption +ToolWindow
+Gui +AlwaysOnTop  +Owner +ToolWindow
 Gui, Font, s9
 Gui, Add, Text, x5 y0, Your order:
+Gui, Font, s12 cRed bold
 Gui, Add, Text, x5 y15 w150 vOrderVar, %Order%
-Gui, Add, Text, x5 y30, Help:
-Gui, Add, Text, x5 y50,   Ctrl+1  -  Open orders menu
-Gui, Add, Text, x5 y70,   Ctrl+2  -  Open truckers chat (/t)
-Gui, Add, Text, x5 y90,   Ctrl+3  -  Open OOS chat (/b)
-Gui, Add, Text, x5 y110,   Alt+1  -  /findtrailer command
-Gui, Add, Text, x5 y130,   Alt+3  -  Manual ImageSearch
-Gui, Add, Text, x5 y150,   Alt+G  -  Open github repository
-Gui, Add, Text, x5 y170,   Alt+R  -  Open RegAge Forum
-Gui, Show, x1180 y890 w200 h195, GTH
+Gui, Font, s9 cBlack Normal
+Gui, Add, Text, x5 y40, Help:
+Gui, Add, Text, x5 y60,   Ctrl+1  -  Open orders menu
+Gui, Add, Text, x5 y80,   Ctrl+2  -  Open truckers chat (/t)
+Gui, Add, Text, x5 y100,   Ctrl+3  -  Open OOS chat (/b)
+Gui, Add, Text, x5 y120,   Alt+1  -  /findtrailer command
+Gui, Add, Text, x5 y140,   Alt+3  -  Manual ImageSearch
+Gui, Add, Text, x5 y160,   Alt+G  -  Open github repository
+Gui, Add, Text, x5 y180,   Alt+R  -  Open RegAge Forum
+Gui, Show, x%ALL_RESOLUTIONS_GUI_XPOS% y%ALL_RESOLUTIONS_GUI_YPOS% w200 h200, GTH
 ; ---------------------------------------------------------------------------
 
 
@@ -120,6 +128,7 @@ Return
     Send, {Text}/findtrailer
         Sleep 100
     Send, {Enter}
+    
 Return
 ; ---------------------------------------------
 
@@ -156,16 +165,15 @@ Return
 ; --------------------------------------------------------
 
 ~LButton::
-    CoordMode, Mouse, Screen
     getMousePos()
 
 
         if (mousePosX > 1838 AND mousePosX < 1868) {
-            Sleep 50
+            Sleep 100
             CheckArray()
         } else 
             if (mousePosX > 1624 AND mousePosY < 1653) {
-                Sleep 50
+                Sleep 100
                 CheckArray()
             }
 Return
@@ -195,7 +203,7 @@ Return
             file = %A_ScriptDir%\images\%image%.png
         ;   ImageSearch, fx, fy, 0, 0, A_ScreenWidth, A_ScreenHeight, %file%
         ImageSearch, OutputVarX, OutputVarY, VirtualScreenLeft, VirtualScreenTop
-		            ,VirtualScreenLeft+VirtualScreenWidth, VirtualScreenTop+VirtualScreenHeight, *20 %file%
+		            ,VirtualScreenLeft+VirtualScreenWidth, VirtualScreenTop+VirtualScreenHeight, %file%
             if (ErrorLevel = 0) {
                 SplitPath, file,,,, noext
                 Order := noext
