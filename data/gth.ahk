@@ -207,12 +207,14 @@ Return
 ;         [ALT+G HOTKEY] Open my github rep
 OpenGitHub:
     Run, https://github.com/katharosMelancholin/GTH-Macro
+Return
 ; --------------------------------------------------------
 
 ; --------------------------------------------------------
 ;        [Ctrl+R HOTKEY] Open RedAge Forum
 OpenRedAge:
     Run, https://forum.redage.net/
+Return
 ; --------------------------------------------------------
 
 ; --------------------------------------------------------
@@ -366,6 +368,7 @@ GuiClose:
                 Sleep 30
             Send {Enter down}       ; {Enter} down
             Send {Enter up}         ; {Enter} up
+        Return
     }
 
     SOS2Message() {
@@ -377,7 +380,7 @@ GuiClose:
                 Sleep 30
             Send {Enter down}       ; {Enter} key down
             Send {Enter up}         ; {Enter} key up
-
+        Return
     }
 
     ShowHelpGui() {
