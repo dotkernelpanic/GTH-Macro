@@ -1,5 +1,5 @@
 #SingleInstance, Force
-SendMode Input
+SendMode Play
 SetWorkingDir, %A_ScriptDir%
 
 CoordMode, Mouse, Screen
@@ -34,11 +34,11 @@ Menu, Tray, Icon, %ico%,, 1
 
 ;                                                       ARRAYS THAT CONTAINS IMAGES
 ; ------------------------------------------------------------------------------------------------------------------------------------------------------ ;
-  img_array := ["Blade", "Bullets", "Burger", "Blista2", "Beer", "BullpupShotgun", "Chino", "Chips", "Clothes", "CombatPDW", "CombatPistol", "Detergent"                       
-                    , "Dukes", "eCola", "Emperor" "Faction", "Faction2", "Faggio2", "Flashlight", "Petrol", "GasolineCan", 
-                    , "Gauntlet2", "Hammer", "HeavyPistol",  "Hermes", "HotDog", "Issi3", "Ingot" "Bunch Of Keys", "LotteryTicket", "MachinePistol", "Masks", 
-                    , "MountTool", "Pariah", "Pistol", "Pizza", "Ruiner" "Sandwich", "SIM", "Sprunk", "Tornado", "Tornado2", 
-                    , "Tornado5", "Vamos", "Wrench", "Buffalo2", "Emperor2", "Revolver", "Tampa", "Virgo", "Voodoo2", "Consumables"]                                      
+  img_array := ["Blade", "Bullets", "Burger", "Blista2", "Beer", "BullpupShotgun", "Chino", "Chips", "Clothes", "CombatPDW", "CombatPistol", "Detergent"
+                    , "Dukes", "eCola", "Emperor" "Faction", "Faction2", "Faggio2", "Flashlight", "Petrol", "GasolineCan",
+                    , "Gauntlet2", "Hammer", "HeavyPistol",  "Hermes", "HotDog", "Issi3", "Ingot" "Bunch Of Keys", "LotteryTicket", "MachinePistol", "Masks",
+                    , "MountTool", "Pariah", "Pistol", "Pizza", "Ruiner" "Sandwich", "SIM", "Sprunk", "Tornado", "Tornado2",
+                    , "Tornado5", "Vamos", "Wrench", "Buffalo2", "Emperor2", "Revolver", "Tampa", "Virgo", "Voodoo2", "Consumables"]
 ;------------------------------------------------------------------------------------------------------------------------------------------------------- ;
 
 OpenOrders              := "^sc002"             ; Hotkey for function that opens orders menu
@@ -53,9 +53,9 @@ ReEnterTruck            := "!sc003"             ; Hotkey for functioin that allo
 Finish                  := "!sc021"             ; Hotkey for function that insert in chat /fjob command
 Sos1                    := "!sc005"             ; Hotkey for function that calls SOS #1
 Sos2                    := "!sc006"             ; Hotkey for function that calls SOS #2
-RotateMyTrailer         := "!sc013"             ; Hotkeyfor function that insert ig chat /report Перевернулся прицеп
-Call112                 := "!sc019"             ; Hotkey for function that calls to police 
-HelpMenu                := "+sc03B"             ; Hotkey for function that opens script help menu
+RotateMyTrailer         := "!sc013"             ; Hotkeyfor function that insert ig chat /report ???????????? ??????
+Call112                 := "!sc019"             ; Hotkey for function that calls to police
+HelpMenu                := "+sc03C"             ; Hotkey for function that opens script help menu
 TgChannel               := "!sc014"             ; Hotkey for function then allow to join My Telegram Channel
 
 Hotkey, %OpenOrders%, OpenOrdersMenu
@@ -73,6 +73,7 @@ Hotkey, %RotateMyTrailer%, SendTrailerRotateReport
 Hotkey, %Call112%, CallToPolice
 Hotkey, %HelpMenu%, OpenHelpGui
 Hotkey, %TgChannel%, JoinTG
+
 
 
 mousePosX       := 0
@@ -101,7 +102,7 @@ Gui, 1:Add, Text, x5 y0, Your order:
 Gui, 1:Font, s10 cRed bold italic
 Gui, 1:Add, Edit, x5 y20 w100 vOrderVar, %Order%
 Gui, 1:Font, s9 cBlack Consolas Normal
-Gui, 1:Add, Text, x5 y50, Press Shift+F1 to open help menu
+Gui, 1:Add, Text, x5 y50, Press Shift+F2 to open help menu
 Gui 1:Add, Text, x5 y70, Press Ctrl+X to exit the script
 Gui, 1:Show, NoActivate x%ALL_RESOLUTIONS_GUI_XPOS% y%ALL_RESOLUTIONS_GUI_YPOS% w200 h90, Truck Helper by 1xrem1psum
 Return
@@ -114,10 +115,12 @@ Return
 
 ;                                                       =========    HOTKEYS CODE SECTION     =======
 
-
 ; -----------------------------------------
 ;         [CTRL+1 HOTKEY] Open orders menu
 OpenOrdersMenu:
+    SendMessage, 0x50,, 0x4190419,, A
+    Send {CtrlUp}
+        Sleep 30
     Send {sc014 down}   ; {T} key down
         Sleep 30
     Send {sc014 up}     ; {T} key up
@@ -130,31 +133,50 @@ OpenOrdersMenu:
 
     CheckArray()        ; Checking image
 Return
+
 ; -----------------------------------------
 
 ; ---------------------------------------
 ;       [ALT+3 HOTKEY] Manual ImageSearch
 ManualImageSearch:
+    SendMessage, 0x50,, 0x4190419,, A
+    Send {AltUp}
+      Sleep 30
     CheckArray()
 Return
 
 ; -----------------------------------------
 ;        [CTRL+2 HOTKEY] Open trucker chat
 OpenTruckChat:
+    SendMessage, 0x50,, 0x4190419,, A
+    Send {CtrlUp}
+        Sleep 30
     Send {sc014 down}   ; {T} key down
     Send {sc014 up}     ; {T} key up
-        Sleep 50
+        Sleep 30
     Send {Raw}/t        ; !RAW! /t command
+        Sleep 30
+    Send {Space down}
+        Sleep 15
+    Send {Space up}
 Return
+
 ; ----------------------------------------
 
 ; ----------------------------------------
 ;           [CTRL+3 HOTKEY] Open OOS chat
 OpenOOSChat:
+    SendMessage, 0x50,, 0x4190419,, A
+    Send {CtrlUp}
+        Sleep 30
     Send {sc014 down}   ; {T} key down
     Send {sc014 up}     ; {T} key up
-        Sleep 50
+        Sleep 30
     Send {Raw}/b        ; !RAW! /b command
+        Sleep 30
+    Send {Space down}
+        Sleep 15
+    Send {Space up}
 Return
 ;-----------------------------------------
 
@@ -162,12 +184,16 @@ Return
 ; ---------------------------------------------
 ;           [ALT+1 HOTKEY] /findtrailer command
 FindTrailer:
+    SendMessage, 0x50,, 0x4190419,, A
+    Send {AltUp}
+        Sleep 30
     Send {sc014 down}       ; {T} key down
     Send {sc014 up}         ; {T} key up
-        Sleep 50
+        Sleep 30
     Send {Raw}/findtrailer  ; !RAW! /findtrailer command
-        Sleep 50
+        Sleep 30
     Send {Enter down}       ; {Enter} key down
+        Sleep 15
     Send {Enter up}         ; {Enter} key up
 Return
 ; ---------------------------------------------
@@ -176,7 +202,9 @@ Return
 ; --------------------------------------------
 ;           [ALT+2 HOTKEY] Re-Enter the truck
 ReEnter:
-
+    SendMessage, 0x50,, 0x4190419,, A
+    Send {AltUp}
+      Sleep 30
     Send {sc021 down}       ; {F} key down
         Sleep 50            ; Keyboard key press emulation
     Send {sc021 up}         ; {F} key up
@@ -191,7 +219,7 @@ ReEnter:
 
     Send {sc014 down}       ; {T} key down
     Send {sc014 up}         ; {T} key up
-    
+
         Sleep 50
 
     Send {Raw}/mypoint      ; !RAW! /mypoint command
@@ -206,6 +234,9 @@ Return
 ; --------------------------------------------------------
 ;         [ALT+G HOTKEY] Open my github rep
 OpenGitHub:
+    SendMessage, 0x50,, 0x4190419,, A
+    Send {AltUp}
+      Sleep 30
     Run, https://github.com/katharosMelancholin/GTH-Macro
 Return
 ; --------------------------------------------------------
@@ -213,6 +244,9 @@ Return
 ; --------------------------------------------------------
 ;        [Ctrl+R HOTKEY] Open RedAge Forum
 OpenRedAge:
+    SendMessage, 0x50,, 0x4190419,, A
+    Send {CtrlUp}
+      Sleep 30
     Run, https://forum.redage.net/
 Return
 ; --------------------------------------------------------
@@ -220,12 +254,16 @@ Return
 ; --------------------------------------------------------
 ;       [ALT+F HOTKEY] Finish job (/fjob)
 FinishJob:
+    SendMessage, 0x50,, 0x4190419,, A
+    Send {AltUp}
+        Sleep 30
     Send {sc014 down}       ; {T} key down
     Send {sc014 up}         ; {T} key up
-        Sleep 50
+        Sleep 30
     Send, {Raw}/fjob        ; !RAW! /fjob command
-        Sleep 50
+        Sleep 30
     Send {Enter down}       ; {Enter} key down
+        Slleep 15
     Send {Enter up}         ; {Enter} key up
 Return
 ; --------------------------------------------------------
@@ -233,24 +271,35 @@ Return
 ; --------------------------------------------------------
 ;               [ALT+R HOTKEY] Send /report
 SendTrailerRotateReport:
+    SendMessage, 0x50,, 0x4190419,, A
+    Send {AltUp}
+         Sleep 30
     Send {sc014 down}       ; {T} key down
     Send {sc014 up}         ; {T} key up
-        Sleep 50
+        Sleep 30
     Send {Raw}/report Перевернулся прицеп
-        Sleep 50
+        Sleep 30
     Send {Enter down}       ; {Enter} key down
+        Sleep 15
     Send {Enter up}         ; {Enter} key up
 Return
 ; --------------------------------------------------------
 
 ; -----------------------------------------------------------------
-;       [ALT+P] Insert in chat /call 112 Грабители на [YOUR TEXT]
+;       [ALT+P] Insert in chat /call 112 ????????? ?? [YOUR TEXT]
 CallToPolice:
+    SendMessage, 0x50,, 0x4190419,, A
+    Send {AltUp}
+        Sleep 30
     SendMode, Input
     Send {sc014 down}       ; {T} key down
     Send {sc014 up}         ; {T} key up
-        Sleep 50
-    Send {Raw}/call 112 Грабители на
+        Sleep 30
+    Send {Raw}/call 112 Грабят на 
+        Sleep 30
+    Send {Space down}
+        Sleep 15
+    Send {space up}
 Return
 ; -----------------------------------------------------------------
 
@@ -258,6 +307,9 @@ Return
 ; ----------------------------------------------------------
 ;               [ALT+T] Open TG
 JoinTG:
+    SendMessage, 0x50,, 0x4190419,, A
+    Send {AltUp}
+      Sleep 30
     Run, https://t.me/joinchat/AAAAAEntc5qp82k32x69SA
 Return
 ; ----------------------------------------------------------
@@ -265,7 +317,9 @@ Return
 ; ---------------------------------------------------------------
 ;       [SHIFT+F1] Open Help menu
 OpenHelpGui:
-    ShowHelpGui() 
+    Send {Shift up}
+      Sleep 30
+    ShowHelpGui()
 Return
 ; ---------------------------------------------------------------
 
@@ -275,7 +329,7 @@ Return
         if (mousePosX > 1838 AND mousePosX < 1868) {
             Sleep 50
             CheckArray()
-        } else 
+        } else
             if (mousePosX > 1624 AND mousePosY < 1653) {
                 Sleep 50
                 CheckArray()
@@ -286,6 +340,8 @@ Return
 ; ---------------------------------------------------------
 ;               [ALT+4] Send SOS1 Message
 SendSosMessage1:
+    Send {AltUp}
+      Sleep 30
     SOS1Message()
 Return
 ; --------------------------------------------------------
@@ -293,6 +349,8 @@ Return
 ; --------------------------------------------------------
 ;               [ALT+5] Send SOS2 Message
 SendSosMessage2:
+    Send {AltUp}
+      Sleep 30
     SOS2Message()
 Return
 ; -------------------------------------------------------
@@ -322,10 +380,6 @@ GuiClose:
         global VirtualScreenHeight
         global WhereIsImageSearcgHasBeenCalled
 
-        if (WhereIsImageSearcgHasBeenCalled = 2) {
-            MsgBox, %WhereIsImageSearcgHasBeenCalled% - ImageSearch manual called
-        }
-
         for index in img_array {
             image := img_array[index]
 
@@ -340,7 +394,7 @@ GuiClose:
                 Break
             }
         }
-        return 
+        return
     }
 ; -----------------------------------------------------------------------------------
 
@@ -360,13 +414,13 @@ GuiClose:
 
 
     SOS1Message() {
-  
             Send {sc014 down}       ; {T} key down
             Send {sc014 up}         ; {T} key up
                 Sleep 30
-            Send {Raw}/t Грабители на Шоссе Сенора!
+            Send {Raw}/t Грабят на Шоссе Сенора!
                 Sleep 30
             Send {Enter down}       ; {Enter} down
+                Sleep 15
             Send {Enter up}         ; {Enter} up
         Return
     }
@@ -376,9 +430,10 @@ GuiClose:
             Send, {sc014 down}      ; {T} key down
             Send, {sc014 up}        ; {T} key up
                 Sleep 30
-            Send {Raw}/t Грабители на Шоссе Грейт-Оушен! 
+            Send {Raw}/t Грабят на Шоссе Грейт Оушен!
                 Sleep 30
             Send {Enter down}       ; {Enter} key down
+                Sleep 15
             Send {Enter up}         ; {Enter} key up
         Return
     }
